@@ -3,4 +3,4 @@
 Cyphers:
 - [x] ROT - basic algorithm, based on rotating alphabet 
 - [ ] Vigenère cipher - based on ROT, with dynamic rotation
-- [ ] DES - Data Encryption Standart, binary algoritm
+- [ ] DES - Data Encryption Standard, binary algorithm

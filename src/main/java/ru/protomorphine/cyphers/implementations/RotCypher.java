@@ -8,13 +8,27 @@ import java.util.function.Function;
 /**
  * Implementation of ROT Cypher
  */
-public class RotCypher implements Cypher<byte[], byte[] , Integer> {
+public class RotCypher implements Cypher<byte[], byte[], Integer> {
 
+    /**
+     *
+     * Encrypts given source with given key
+     *
+     * @param source Source than needs to be encrypted
+     * @param key Key to encrypt source
+     */
     @Override
     public byte[] encrypt(byte[] source, Integer key) {
         return process(source, encodedValue -> encodedValue + key);
     }
 
+    /**
+     *
+     * Decrypt given source with given key
+     *
+     * @param source Source that needs to be decrypted
+     * @param key Key to decrypt source
+     */
     @Override
     public byte[] decrypt(byte[] source, Integer key) {
         return process(source, encryptedValue -> encryptedValue - key);
