@@ -3,7 +3,6 @@ package ru.protomorphine.cyphers.implementations;
 import ru.protomorphine.cyphers.AlphabeticCypher;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.IntBinaryOperator;
 
 /**
@@ -61,11 +60,8 @@ public class VigenereCypher extends AlphabeticCypher<Byte, Byte, byte[]> {
 
         byte[] extendedKey = extendKey(key, sourceSize);
 
-        System.out.println("Key = " + Arrays.toString(extendedKey));
-
         for (int i = 0; i < sourceSize; i++) {
-            var tt = (byte)op.applyAsInt(source.get(i), extendedKey[i]) % (byte)this.alphabetLength;
-            var processedByte = (byte) tt;
+            var processedByte = (byte) ((byte)op.applyAsInt(source.get(i), extendedKey[i]) % (byte)this.alphabetLength);
             result.add(processedByte);
         }
         return result;
