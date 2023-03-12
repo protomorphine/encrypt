@@ -2,5 +2,8 @@
 
 Cyphers:
 - [x] ROT - basic algorithm, based on rotating alphabet 
-- [ ] Vigenère cipher - based on ROT, with dynamic rotation
+- [x] Vigenère cipher - based on ROT, with dynamic rotation
 - [ ] DES - Data Encryption Standard, binary algorithm
+
+TODO list:
+- [ ] Implement dependency injection pattern
