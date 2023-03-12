@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * String to byte array encoder
  */
-public class StringEncoder implements BaseEncoder<byte[], String> {
+public class ByteArrayStringEncoder implements BaseEncoder<byte[], String> {
 
     /**
      * Encode source

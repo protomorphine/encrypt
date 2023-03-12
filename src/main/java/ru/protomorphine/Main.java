@@ -1,26 +1,55 @@
 package ru.protomorphine;
 
-import ru.protomorphine.cyphers.implementations.RotCypher;
-import ru.protomorphine.encoders.implementations.StringEncoder;
-
-import java.util.Arrays;
+import org.apache.commons.cli.*;
+import ru.protomorphine.helpers.EncryptionHelper;
 
 public class Main {
+
+    /**
+     *
+     * Program entry point
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         System.out.println("Let's Encrypt Data");
 
-        StringEncoder encoder = new StringEncoder();
-        RotCypher cypher = new RotCypher();
+        Options cmdOptions = new Options();
 
-        String beforeEncoded = "TEST DATA";
-        byte[] encoded = encoder.encode(beforeEncoded);
-        byte[] encrypted = cypher.encrypt(encoded, 13);
+        Option cypherOption = new Option("c", "cypher", true, "cypher");
+        Option inputStringOption = new Option("i", "input-string", true, "String to encrypt");
+        Option keyOption = new Option("k", "key", true, "Key to encrypt/decrypt data");
 
-        byte[] decrypted = cypher.decrypt(encrypted, 13);
-        String decoded = encoder.decode(decrypted);
+        cypherOption.setRequired(true);
+        cmdOptions.addOption(cypherOption);
+        inputStringOption.setRequired(true);
+        cmdOptions.addOption(inputStringOption);
+        keyOption.setRequired(true);
+        cmdOptions.addOption(keyOption);
 
-        System.out.println("Encoded string = " + Arrays.toString(encoded));
-        System.out.println("Encrypted string = " + encoder.decode(encrypted));
-        System.out.println("Decrypted = " + decoded);
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+
+        CommandLine cmd = null;
+
+        try {
+            cmd = parser.parse(cmdOptions, args);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("encrypt", cmdOptions);
+
+            System.exit(1);
+        }
+
+        String cypher = cmd.getOptionValue("cypher");
+        String source = cmd.getOptionValue("input-string");
+        String key = cmd.getOptionValue("key");
+
+
+        switch (cypher) {
+            case "rot" -> System.out.println(EncryptionHelper.encryptWithRotCypher(source, Integer.valueOf(key)));
+            case "vigenere" -> System.out.println(EncryptionHelper.encryptWithVigenereCypher(source, key));
+        }
+
     }
 }

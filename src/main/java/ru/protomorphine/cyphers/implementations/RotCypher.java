@@ -1,14 +1,24 @@
 package ru.protomorphine.cyphers.implementations;
 
-import ru.protomorphine.cyphers.Cypher;
-import ru.protomorphine.helpers.MathHelper;
+import ru.protomorphine.cyphers.AlphabeticCypher;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 
 /**
  * Implementation of ROT Cypher
  */
-public class RotCypher implements Cypher<byte[], byte[], Integer> {
+public class RotCypher extends AlphabeticCypher<Byte, Byte, Integer> {
+
+    /**
+     *
+     * Creates new instance of RotCypher
+     *
+     * @param alphabetLength Length of used alphabet
+     */
+    public RotCypher(long alphabetLength) {
+        super(alphabetLength);
+    }
 
     /**
      *
@@ -18,7 +28,7 @@ public class RotCypher implements Cypher<byte[], byte[], Integer> {
      * @param key Key to encrypt source
      */
     @Override
-    public byte[] encrypt(byte[] source, Integer key) {
+    public ArrayList<Byte> encrypt(ArrayList<Byte> source, Integer key) {
         return process(source, encodedValue -> encodedValue + key);
     }
 
@@ -30,21 +40,25 @@ public class RotCypher implements Cypher<byte[], byte[], Integer> {
      * @param key Key to decrypt source
      */
     @Override
-    public byte[] decrypt(byte[] source, Integer key) {
-        return process(source, encryptedValue -> encryptedValue - key);
+    public ArrayList<Byte> decrypt(ArrayList<Byte> source, Integer key) {
+        return encrypt(source, -key);
     }
 
     /**
      * Process source with ROT algorithm with given key
+     *
      * @param source Encoded source
      * @param processor operation with byte and key (+ for encrypt, - for decrypt)
      * @return Processed (encrypted or decrypted) source
      */
-    private byte[] process(byte[] source, Function<Integer, Integer> processor) {
-        var result = new byte[source.length];
-        for (int i = 0; i < source.length; i++) {
-            result[i] = (byte) MathHelper.mod(processor.apply((int)source[i]), Byte.MAX_VALUE);
+    private ArrayList<Byte> process(ArrayList<Byte> source, Function<Integer, Integer> processor) {
+
+        ArrayList<Byte> result = new ArrayList<>();
+
+        for (Byte elem : source) {
+            result.add((byte) (processor.apply((int) elem) % this.alphabetLength));
         }
+
         return result;
     }
 }
